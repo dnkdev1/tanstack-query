@@ -6,18 +6,23 @@ import {type ChangeEvent, useState} from "react";
 
 import { keepPreviousData } from "@tanstack/react-query"
 
-export const Playlists = () => {
+type Props = {
+    userId?: string
+}
+
+export const Playlists = ({userId}: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
 
     const query = useQuery({
-        queryKey: ["playlists", {page, search}],
+        queryKey: ["playlists", {page, search, userId}],
         queryFn: async ({signal}) => {
             const response = await client.GET("/playlists", {
                 params: {
                     query: {
                         pageNumber: page,
                         search,
+                        userId,
                     },
                 },
                 signal
