@@ -11,13 +11,14 @@ export const Playlists = () => {
 
     const query = useQuery({
         queryKey: ["playlists", page],
-        queryFn: async () => {
+        queryFn: async ({signal}) => {
             const response = await client.GET("/playlists", {
                 params: {
                     query: {
                         pageNumber: page,
                     },
                 },
+                signal
             })
             if (response.error) {
                 throw (response as unknown as { error: Error }).error
@@ -35,6 +36,7 @@ export const Playlists = () => {
 
     return (
         <div>
+            <hr/>
             <Pagination
                 pageCount={query.data.meta.pagesCount}
                 currentPage={page}
