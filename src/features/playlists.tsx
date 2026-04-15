@@ -4,7 +4,12 @@ import {client} from "../shared/api/client.ts";
 export const Playlists = () => {
     const query = useQuery({
         queryKey: ["playlists"],
-        queryFn: () => client.GET("/playlists"),
+        // queryFn: () => client.GET("/playlists"),
+        queryFn: async () => {
+            const response = await client.GET("/playlists")
+            return response.data! //сейчас будем считать что у нас точно есть данные
+            // и ошибка не упадёт
+        },
     })
 
     console.log("status:" + query.status)
@@ -15,10 +20,9 @@ export const Playlists = () => {
 
     return (
         <div>
-            {/*if (query.isFetching) return <span>⏳</span>*/}
-            {query.isPending ? '⏳' : ''}
+            if (query.isFetching) return <span>⏳</span>
             <ul>
-                {query.data.data?.data.map((playlist) => (
+                {query.data.data.map((playlist) => (
                     <li key={playlist.id}>{playlist.attributes.title}</li>
                 ))}
             </ul>
