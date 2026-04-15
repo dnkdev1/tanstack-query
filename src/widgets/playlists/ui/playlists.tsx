@@ -1,11 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
-import {client} from "../shared/api/client.ts";
+import {client} from "../../../shared/api/client.ts";
 
-import {Pagination} from "../shared/ui/pagination/pagination.tsx";
+import {Pagination} from "../../../shared/ui/pagination/pagination.tsx";
 import {type ChangeEvent, useState} from "react";
 
 import { keepPreviousData } from "@tanstack/react-query"
-import {DeletePlaylist} from "./playlists/delete-playlist/ui/delete-playlist.tsx";
+import {DeletePlaylist} from "../../../features/playlists/delete-playlist/ui/delete-playlist.tsx";
 
 type Props = {
     userId?: string
