@@ -1,6 +1,7 @@
 import {Playlists} from "../features/playlists.tsx";
 import {useMeQuery} from "../features/auth/api/use-me-query.ts";
 import {Navigate} from "@tanstack/react-router";
+import {AddPlaylistForm} from "../features/playlists/add-playlist/ui/add-playlist-form.tsx";
 
 
 export function MyPlaylistsPage() {
@@ -15,6 +16,9 @@ export function MyPlaylistsPage() {
     return (
         <div>
             <h2>My Playlists</h2>
+            <hr />
+            <AddPlaylistForm />
+            <hr />
             <Playlists userId={data.userId} />
         </div>
     )
