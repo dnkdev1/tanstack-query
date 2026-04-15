@@ -10,11 +10,16 @@ export const Playlists = () => {
     console.log("status:" + query.status)
     console.log("fetchStatus:" + query.fetchStatus)
 
+    if (query.isPending) return <span>Loading...</span>
+    if (query.isError) return <span>{JSON.stringify(query.error.message)}</span>
+
     return (
         <div>
+            {/*if (query.isFetching) return <span>⏳</span>*/}
+            {query.isPending ? '⏳' : ''}
             <ul>
-                {query.data?.data?.data.map((playlist) => (
-                    <li>{playlist.attributes.title}</li>
+                {query.data.data?.data.map((playlist) => (
+                    <li key={playlist.id}>{playlist.attributes.title}</li>
                 ))}
             </ul>
         </div>
