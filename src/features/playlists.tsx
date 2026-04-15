@@ -5,12 +5,14 @@ import {Pagination} from "../shared/ui/pagination/pagination.tsx";
 import {type ChangeEvent, useState} from "react";
 
 import { keepPreviousData } from "@tanstack/react-query"
+import {DeletePlaylist} from "./playlists/delete-playlist/ui/delete-playlist.tsx";
 
 type Props = {
     userId?: string
+    onPlaylistDeleted?: (playlistId: string) => void
 }
 
-export const Playlists = ({userId}: Props) => {
+export const Playlists = ({userId, onPlaylistDeleted,}: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
 
@@ -34,6 +36,11 @@ export const Playlists = ({userId}: Props) => {
         },
         placeholderData: keepPreviousData,
     })
+
+    const handleDeletePlaylist = (playlistId: string) => {
+        onPlaylistDeleted?.(playlistId)
+    }
+
 
     console.log("status:" + query.status)
     console.log("fetchStatus:" + query.fetchStatus)
@@ -59,7 +66,9 @@ export const Playlists = ({userId}: Props) => {
             />
             <ul>
                 {query.data.data.map((playlist) => (
-                    <li>{playlist.attributes.title}</li>
+                    <li>
+                        {playlist.attributes.title} <DeletePlaylist onDeleted={handleDeletePlaylist} playlistId={playlist.id}/>
+                    </li>
                 ))}
             </ul>
         </div>
