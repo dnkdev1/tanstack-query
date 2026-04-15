@@ -10,6 +10,7 @@ import {createRouter, RouterProvider} from "@tanstack/react-router";
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
+            retry: 0,
             staleTime: Infinity,
             refetchOnMount: false,
             refetchOnWindowFocus: false,
@@ -18,14 +19,6 @@ const queryClient = new QueryClient({
         },
     },
 })
-
-// createRoot(document.getElementById("root")!).render(
-//
-//     <QueryClientProvider client={queryClient}>
-//         <PlaylistsPage />
-//         <ReactQueryDevtools initialIsOpen={false} />
-//     </QueryClientProvider>,
-// )
 
 const router = createRouter({ routeTree })
 
