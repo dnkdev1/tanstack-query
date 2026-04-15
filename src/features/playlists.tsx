@@ -1,15 +1,30 @@
 import {useQuery} from "@tanstack/react-query";
 import {client} from "../shared/api/client.ts";
 
+import {Pagination} from "../shared/ui/pagination/pagination.tsx";
+import {useState} from "react";
+
+import { keepPreviousData } from "@tanstack/react-query"
+
 export const Playlists = () => {
+    const [page, setPage] = useState(1)
+
     const query = useQuery({
-        queryKey: ["playlists"],
-        // queryFn: () => client.GET("/playlists"),
+        queryKey: ["playlists", page],
         queryFn: async () => {
-            const response = await client.GET("/playlists")
-            return response.data! //сейчас будем считать что у нас точно есть данные
-            // и ошибка не упадёт
+            const response = await client.GET("/playlists", {
+                params: {
+                    query: {
+                        pageNumber: page,
+                    },
+                },
+            })
+            if (response.error) {
+                throw (response as unknown as { error: Error }).error
+            }
+            return response.data
         },
+        placeholderData: keepPreviousData,
     })
 
     console.log("status:" + query.status)
@@ -20,10 +35,15 @@ export const Playlists = () => {
 
     return (
         <div>
-            if (query.isFetching) return <span>⏳</span>
+            <Pagination
+                pageCount={query.data.meta.pagesCount}
+                currentPage={page}
+                onPageNumberChange={setPage}
+                isFetching={query.isFetching}
+            />
             <ul>
                 {query.data.data.map((playlist) => (
-                    <li key={playlist.id}>{playlist.attributes.title}</li>
+                    <li>{playlist.attributes.title}</li>
                 ))}
             </ul>
         </div>
