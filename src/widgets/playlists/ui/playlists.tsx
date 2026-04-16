@@ -10,22 +10,34 @@ import {DeletePlaylist} from "../../../features/playlists/delete-playlist/ui/del
 type Props = {
     userId?: string
     onPlaylistSelected?: (playlistId: string) => void
+    isSearchActive?: boolean
 }
 
-export const Playlists = ({userId, onPlaylistSelected,}: Props) => {
+export const Playlists = ({userId, onPlaylistSelected, isSearchActive}: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
 
+
+    // const key = userId ? ['playlists', 'my', userId] : ['playlists', {search, page}]
+    // const queryParams = userId ? {
+    //     userId
+    // } : {
+    //     pageNumber:
+    //     page,
+    //     search
+    // }
+
+    const queryParams = userId
+        ? { userId }
+        : { pageNumber: page, search }
+
+
     const query = useQuery({
-        queryKey: ["playlists", {page, search, userId}],
+        queryKey: ['playlists', queryParams],
         queryFn: async ({signal}) => {
             const response = await client.GET("/playlists", {
                 params: {
-                    query: {
-                        pageNumber: page,
-                        search,
-                        userId,
-                    },
+                    query: queryParams
                 },
                 signal
             })
@@ -53,14 +65,25 @@ export const Playlists = ({userId, onPlaylistSelected,}: Props) => {
 
     return (
         <div>
-            <div>
-                <input
+            {/*<div>*/}
+            {/*    <input*/}
+            {/*        value={search}*/}
+            {/*        onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.currentTarget.value)}*/}
+            {/*        placeholder={"search..."}*/}
+            {/*    />*/}
+            {/*</div>*/}
+            {/*<hr />*/}
+
+            {isSearchActive && <>
+                <div><input
                     value={search}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.currentTarget.value)}
                     placeholder={"search..."}
-                />
-            </div>
-            <hr />
+                /></div>
+                <hr />
+            </>}
+
+
             <Pagination
                 pageCount={query.data.meta.pagesCount}
                 currentPage={page}
