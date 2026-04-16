@@ -1,8 +1,9 @@
 import createClient, {type Middleware} from "openapi-fetch"
 import type {paths} from "./schema"
+import {apiKey, baseUrl} from "../config/api-config.ts";
+import {localStorageKeys} from "../config/localstorage-keys.ts";
 
-export const baseUrl = "https://musicfun.it-incubator.app/api/1.0/"
-export const apiKey = "337b3262-f37f-4b39-bade-2207035ea372"
+
 
 let refreshPromise: Promise<void> | null = null
 
@@ -22,14 +23,14 @@ function makeRefreshToken(): Promise<void> {
             })
 
             if (!response.ok) {
-                localStorage.removeItem('musicfun-access-token')
-                localStorage.removeItem('musicfun-refresh-token')
+                localStorage.removeItem(localStorageKeys.accessToken)
+                localStorage.removeItem(localStorageKeys.refreshToken)
                 throw new Error('Refresh token failed')
             }
 
             const data = await response.json()
-            localStorage.setItem('musicfun-access-token', data.accessToken)
-            localStorage.setItem('musicfun-refresh-token', data.refreshToken)
+            localStorage.setItem(localStorageKeys.accessToken, data.accessToken)
+            localStorage.setItem(localStorageKeys.refreshToken, data.refreshToken)
         })()
 
         refreshPromise.finally(() => {
@@ -43,7 +44,7 @@ function makeRefreshToken(): Promise<void> {
 
 const authMiddleware: Middleware = {
     onRequest({ request }) {
-        const accessToken = localStorage.getItem('musicfun-access-token')
+        const accessToken = localStorage.getItem(localStorageKeys.accessToken)
         if (accessToken) {
             request.headers.set('Authorization', 'Bearer ' + accessToken)
         }
@@ -70,7 +71,7 @@ const authMiddleware: Middleware = {
             })
             retryRequest.headers.set(
                 'Authorization',
-                'Bearer ' + localStorage.getItem('musicfun-access-token')
+                'Bearer ' + localStorage.getItem(localStorageKeys.accessToken)
             )
             return fetch(retryRequest)
         } catch {
@@ -84,7 +85,7 @@ const authMiddleware: Middleware = {
 export const client = createClient<paths>({
     baseUrl: baseUrl,
     headers: {
-        "api-key": "337b3262-f37f-4b39-bade-2207035ea372",
+        "api-key": apiKey,
     },
 })
 
