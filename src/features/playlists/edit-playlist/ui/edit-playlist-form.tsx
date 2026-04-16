@@ -34,9 +34,6 @@ export const EditPlaylistForm = ({ playlistId, onCancelEditing }: Props) => {
             })
         }
     }, [data, reset])
-    // useEffect(() => {
-    //     reset()
-    // }, [playlistId])
 
 
 

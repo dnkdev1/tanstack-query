@@ -1,15 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { client } from "../../../shared/api/client.ts"
+import {authKeys} from "../../../shared/api/key-factories/auth-keys-factories.ts";
 
-export const useMeQuery = () => {
-    const query = useQuery({
-        queryKey: ["auth", "me"],
+export const useMeQuery = () =>
+    useQuery({
+        queryKey: authKeys.me(),
         queryFn: async () => {
-            const clientResponse = await client.GET("/auth/me")
+            const clientResponse = await client.GET('/auth/me')
             return clientResponse.data
         },
         retry: false,
     })
-
-    return query
-}

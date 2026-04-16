@@ -85,7 +85,7 @@ export const useUpdatePlaylistMutation = ({
 
         onSettled: (_, __, variables: MutationVariables) => {
             queryClient.invalidateQueries({
-                queryKey: ['playlists'],
+                queryKey: playlistsKeys.lists(),
                 refetchType: "all",
             })
             queryClient.invalidateQueries({
