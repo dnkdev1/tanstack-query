@@ -9,10 +9,10 @@ import {DeletePlaylist} from "../../../features/playlists/delete-playlist/ui/del
 
 type Props = {
     userId?: string
-    onPlaylistDeleted?: (playlistId: string) => void
+    onPlaylistSelected?: (playlistId: string) => void
 }
 
-export const Playlists = ({userId, onPlaylistDeleted,}: Props) => {
+export const Playlists = ({userId, onPlaylistSelected,}: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
 
@@ -38,9 +38,12 @@ export const Playlists = ({userId, onPlaylistDeleted,}: Props) => {
     })
 
     const handleDeletePlaylist = (playlistId: string) => {
-        onPlaylistDeleted?.(playlistId)
+        onPlaylistSelected?.(playlistId)
     }
 
+    const handleSelectPlaylistClick = (playlistId: string) => {
+        onPlaylistSelected?.(playlistId);
+    }
 
     console.log("status:" + query.status)
     console.log("fetchStatus:" + query.fetchStatus)
@@ -66,7 +69,7 @@ export const Playlists = ({userId, onPlaylistDeleted,}: Props) => {
             />
             <ul>
                 {query.data.data.map((playlist) => (
-                    <li>
+                    <li key={playlist.id} onClick={() => handleSelectPlaylistClick(playlist.id)}>
                         {playlist.attributes.title} <DeletePlaylist onDeleted={handleDeletePlaylist} playlistId={playlist.id}/>
                     </li>
                 ))}
