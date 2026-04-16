@@ -1,11 +1,7 @@
-import {useQuery} from "@tanstack/react-query";
-import {client} from "../../../shared/api/client.ts";
-
 import {Pagination} from "../../../shared/ui/pagination/pagination.tsx";
 import {type ChangeEvent, useState} from "react";
-
-import { keepPreviousData } from "@tanstack/react-query"
 import {DeletePlaylist} from "../../../features/playlists/delete-playlist/ui/delete-playlist.tsx";
+import {usePlaylistsQuery} from "../api/use-playlists-query.ts";
 
 type Props = {
     userId?: string
@@ -27,27 +23,30 @@ export const Playlists = ({userId, onPlaylistSelected, isSearchActive}: Props) =
     //     search
     // }
 
-    const queryParams = userId
-        ? { userId }
-        : { pageNumber: page, search }
+    // const queryParams = userId
+    //     ? { userId }
+    //     : { pageNumber: page, search }
+    //
+    //
+    // const query = useQuery({
+    //     queryKey: ['playlists', queryParams],
+    //     queryFn: async ({signal}) => {
+    //         const response = await client.GET("/playlists", {
+    //             params: {
+    //                 query: queryParams
+    //             },
+    //             signal
+    //         })
+    //         if (response.error) {
+    //             throw (response as unknown as { error: Error }).error
+    //         }
+    //         return response.data
+    //     },
+    //     placeholderData: keepPreviousData,
+    // })
 
 
-    const query = useQuery({
-        queryKey: ['playlists', queryParams],
-        queryFn: async ({signal}) => {
-            const response = await client.GET("/playlists", {
-                params: {
-                    query: queryParams
-                },
-                signal
-            })
-            if (response.error) {
-                throw (response as unknown as { error: Error }).error
-            }
-            return response.data
-        },
-        placeholderData: keepPreviousData,
-    })
+    const query = usePlaylistsQuery(userId, { search, pageNumber: page })
 
     const handleDeletePlaylist = (playlistId: string) => {
         onPlaylistSelected?.(playlistId)
