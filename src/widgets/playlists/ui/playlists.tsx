@@ -6,44 +6,13 @@ import {usePlaylistsQuery} from "../api/use-playlists-query.ts";
 type Props = {
     userId?: string
     onPlaylistSelected?: (playlistId: string) => void
+
     isSearchActive?: boolean
 }
 
 export const Playlists = ({userId, onPlaylistSelected, isSearchActive}: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
-
-
-    // const key = userId ? ['playlists', 'my', userId] : ['playlists', {search, page}]
-    // const queryParams = userId ? {
-    //     userId
-    // } : {
-    //     pageNumber:
-    //     page,
-    //     search
-    // }
-
-    // const queryParams = userId
-    //     ? { userId }
-    //     : { pageNumber: page, search }
-    //
-    //
-    // const query = useQuery({
-    //     queryKey: ['playlists', queryParams],
-    //     queryFn: async ({signal}) => {
-    //         const response = await client.GET("/playlists", {
-    //             params: {
-    //                 query: queryParams
-    //             },
-    //             signal
-    //         })
-    //         if (response.error) {
-    //             throw (response as unknown as { error: Error }).error
-    //         }
-    //         return response.data
-    //     },
-    //     placeholderData: keepPreviousData,
-    // })
 
 
     const query = usePlaylistsQuery(userId, { search, pageNumber: page })
@@ -64,14 +33,6 @@ export const Playlists = ({userId, onPlaylistSelected, isSearchActive}: Props) =
 
     return (
         <div>
-            {/*<div>*/}
-            {/*    <input*/}
-            {/*        value={search}*/}
-            {/*        onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.currentTarget.value)}*/}
-            {/*        placeholder={"search..."}*/}
-            {/*    />*/}
-            {/*</div>*/}
-            {/*<hr />*/}
 
             {isSearchActive && <>
                 <div><input
