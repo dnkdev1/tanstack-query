@@ -69,7 +69,6 @@ export const EditPlaylistForm = ({ playlistId, onCancelEditing }: Props) => {
                 {...register("data.type")}
             />
             <p>
-                {/*<input {...register("data.attributes.title")} defaultValue={data.data.attributes.title} />*/}
                 <input {...register("data.attributes.title")} defaultValue={data.data.attributes.title} />
             </p>
             {errors.data?.attributes?.title && (
