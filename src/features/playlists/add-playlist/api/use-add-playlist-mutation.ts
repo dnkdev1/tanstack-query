@@ -1,7 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { SchemaCreatePlaylistRequestPayload } from "../../../../shared/api/schema.ts"
-import { client } from "../../../../shared/api/client.ts"
-import {playlistsKeys} from "../../../../shared/api/key-factories/playlists-keys-factory.ts";
+import {useMutation, useQueryClient} from "@tanstack/react-query"
+import type {SchemaCreatePlaylistRequestPayload} from "../../../../shared/api/schema.ts"
+import {client} from "../../../../shared/api/client.ts"
 
 export const useAddPlaylistMutation = () => {
     const queryClient = useQueryClient()
@@ -15,7 +14,7 @@ export const useAddPlaylistMutation = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: playlistsKeys.lists(),
+                queryKey: ['playlists'],
                 refetchType: "all",
             })
         },
