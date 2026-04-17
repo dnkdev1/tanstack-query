@@ -11,6 +11,7 @@ export const useAddPlaylistMutation = () => {
             const response = await client.POST('/playlists', {
                 body: data,
             })
+
             return response.data
         },
         onSuccess: () => {

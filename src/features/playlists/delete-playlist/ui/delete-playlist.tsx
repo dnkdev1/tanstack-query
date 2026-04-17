@@ -13,5 +13,8 @@ export const DeletePlaylist = ({ playlistId, onDeleted }: Props) => {
         onDeleted?.(playlistId)
     }
 
-    return <button onClick={handleDeleteClick}>🗑️</button>
+    return <button onClick={(e) => {
+        e.stopPropagation()
+        handleDeleteClick()
+    }}>🗑️</button>
 }
