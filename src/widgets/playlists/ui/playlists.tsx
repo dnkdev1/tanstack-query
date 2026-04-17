@@ -6,11 +6,11 @@ import {usePlaylistsQuery} from "../api/use-playlists-query.ts";
 type Props = {
     userId?: string
     onPlaylistSelected?: (playlistId: string) => void
-
+    onPlaylistDeleted?: (playlistId: string) => void
     isSearchActive?: boolean
 }
 
-export const Playlists = ({userId, onPlaylistSelected, isSearchActive}: Props) => {
+export const Playlists = ({userId, onPlaylistSelected, onPlaylistDeleted, isSearchActive}: Props) => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
 
@@ -18,7 +18,7 @@ export const Playlists = ({userId, onPlaylistSelected, isSearchActive}: Props) =
     const query = usePlaylistsQuery(userId, { search, pageNumber: page })
 
     const handleDeletePlaylist = (playlistId: string) => {
-        onPlaylistSelected?.(playlistId)
+        onPlaylistDeleted?.(playlistId)
     }
 
     const handleSelectPlaylistClick = (playlistId: string) => {
